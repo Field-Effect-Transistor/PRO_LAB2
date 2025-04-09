@@ -1,6 +1,6 @@
 //  MenuWidget.cpp
 
-#include "MenuWidget.h"
+#include "MenuWidget.hpp"
 
 MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
     mainLayout = new QVBoxLayout;

@@ -1,17 +1,18 @@
-//  MainWindow.h
+//  MainWindow.hpp
 
 #pragma once
 
 #include <QWidget>
 #include <QHBoxLayout>
 
-#include "MenuWidget.h"
+#include "MenuWidget.hpp"
+#include "EnterWidget.hpp"
 
 class MainWindow: public QWidget {
     Q_OBJECT
 private:
     QWidget *left;
-    //QWidget *right;
+    QWidget *right;
 
 public:
     MainWindow(QWidget *parent = nullptr);

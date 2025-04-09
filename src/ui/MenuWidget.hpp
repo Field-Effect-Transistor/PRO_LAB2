@@ -1,4 +1,4 @@
-// MenuWidget.h
+// MenuWidget.hpp
 
 #pragma once
 

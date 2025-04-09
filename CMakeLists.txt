@@ -17,8 +17,9 @@ find_package(MPI REQUIRED)
 set(SOURCES
     src/main.cpp
     src/ui/MenuWidget.cpp
+    src/ui/EnterWidget.cpp
     src/ui/MainWindow.cpp
-    # додайте інші cpp файли
+    src/logic/MPIHandler.cpp
 )
 
 # Створити виконуваний файл
