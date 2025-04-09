@@ -22,16 +22,26 @@ private:
 
     QGroupBox   *setNBox;
     QHBoxLayout *setNLayout;
-    QSpinBox    *setNSpinBox;
-    QPushButton *confirmNButton;
 
     QGroupBox   *setMatrixBox;
     QHBoxLayout *setMatrixLayout;
-    QButtonGroup    *setMatrixButtonGroup;
 
-    QPushButton *startButton;
     
 public:
+
+    QPushButton *startButton;
+    QPushButton *confirmNButton;
+    QSpinBox    *setNSpinBox;
+    QButtonGroup    *setMatrixButtonGroup;
+
+static QRadioButton
+    *matrixA,
+    *matrixA1,
+    *matrixA2,
+    *matrixB2,
+    *vectorB1,
+    *vectorC1;
+
     MenuWidget(QWidget *parent = nullptr);
     ~MenuWidget();
 };

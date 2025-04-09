@@ -11,8 +11,8 @@
 class MainWindow: public QWidget {
     Q_OBJECT
 private:
-    QWidget *left;
-    QWidget *right;
+    MenuWidget *left;
+    EnterWidget *right;
 
 public:
     MainWindow(QWidget *parent = nullptr);

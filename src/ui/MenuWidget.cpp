@@ -2,6 +2,13 @@
 
 #include "MenuWidget.hpp"
 
+QRadioButton* MenuWidget::matrixA = nullptr;
+QRadioButton* MenuWidget::matrixA1 = nullptr;
+QRadioButton* MenuWidget::matrixA2 = nullptr;
+QRadioButton* MenuWidget::matrixB2 = nullptr;
+QRadioButton* MenuWidget::vectorB1 = nullptr;
+QRadioButton* MenuWidget::vectorC1 = nullptr;
+
 MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
     mainLayout = new QVBoxLayout;
 
@@ -40,19 +47,19 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
     setMatrixLayout = new QHBoxLayout;
     QWidget* left = new QWidget, *right = new QWidget;
     QVBoxLayout* leftLayout = new QVBoxLayout, *rightLayout = new QVBoxLayout;
-    QRadioButton
-        *matrixA = new QRadioButton("Matrix A"),
-        *matrixA1 = new QRadioButton("Matrix A1"),
-        *matrixA2 = new QRadioButton("Matrix A2"),
-        *matrixB2 = new QRadioButton("Matrix B2"),
-        *vectorB1 = new QRadioButton("Vector b1"),
-        *vectorC1 = new QRadioButton("Vector c1");
+    matrixA = new QRadioButton("Matrix A"),
+    matrixA1 = new QRadioButton("Matrix A1"),
+    matrixA2 = new QRadioButton("Matrix A2"),
+    matrixB2 = new QRadioButton("Matrix B2"),
+    vectorB1 = new QRadioButton("Vector b1"),
+    vectorC1 = new QRadioButton("Vector c1");
     leftLayout->addWidget(matrixA);
     leftLayout->addWidget(matrixA1);
     leftLayout->addWidget(matrixA2);
     rightLayout->addWidget(matrixB2);
     rightLayout->addWidget(vectorB1);
     rightLayout->addWidget(vectorC1);
+    matrixA->setChecked(true);
     left->setLayout(leftLayout);
     right->setLayout(rightLayout);
     setMatrixLayout->addWidget(left);

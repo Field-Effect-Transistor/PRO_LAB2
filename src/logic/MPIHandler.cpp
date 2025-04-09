@@ -2,6 +2,8 @@
 #include "MPIHandler.hpp"
 #include <iostream>
 
+int MPIHandler::rank = -1;
+
 MPIHandler& MPIHandler::getInstance() {
     static MPIHandler instance;
     return instance;
@@ -12,7 +14,8 @@ MPIHandler::MPIHandler() {
     MPI_Initialized(&isInitialized);
     if (!isInitialized) {
         MPI_Init(nullptr, nullptr);
-        std::cerr << "MPI Initialized\n";
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        std::cerr << "MPI Initialized in program with " << rank << " rank\n";
     }
 }
 
@@ -21,6 +24,10 @@ MPIHandler::~MPIHandler() {
     MPI_Finalized(&isFinalized);
     if (!isFinalized) {
         MPI_Finalize();
-        std::cerr << "MPI Finalized\n";
+        std::cerr << "MPI Finalized in program with " << rank << " rank\n";
     }
+}
+
+int MPIHandler::getRank() {
+    return rank;
 }
