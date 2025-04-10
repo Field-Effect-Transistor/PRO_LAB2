@@ -12,6 +12,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Знайти OpenMPI
 find_package(MPI REQUIRED)
+find_package(Boost REQUIRED)
 
 # Вказати ваші вихідні файли
 set(SOURCES
@@ -36,4 +37,5 @@ target_link_libraries(${PROJECT_NAME}
 # Додати include директрії
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${MPI_INCLUDE_PATH}
+    ${Boost_INCLUDE_DIR}
 )
