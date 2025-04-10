@@ -86,3 +86,7 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
 }
 
 MenuWidget::~MenuWidget() {}
+
+void    MenuWidget::start(int n) {
+    
+}

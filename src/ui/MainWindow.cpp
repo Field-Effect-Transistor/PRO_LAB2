@@ -42,6 +42,15 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
             right->confirm((QRadioButton*)left->setMatrixButtonGroup->checkedButton());
         }
     );
+
+    connect(
+        left->startButton,
+        &QPushButton::clicked,
+        this,
+        [this]() {
+            left->start(left->setNSpinBox->value());
+        }
+    );
 }
 
 MainWindow::~MainWindow() {}

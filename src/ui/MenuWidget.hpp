@@ -12,6 +12,8 @@
 #include <QButtonGroup>
 #include <QSpinBox>
 
+#include "../logic/MPIHandler.hpp"
+
 class MenuWidget : public QWidget {
     Q_OBJECT
 private:
@@ -44,4 +46,8 @@ static QRadioButton
 
     MenuWidget(QWidget *parent = nullptr);
     ~MenuWidget();
+
+public slots:
+    void start(int n);
+
 };
