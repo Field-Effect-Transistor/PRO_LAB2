@@ -43,6 +43,7 @@ void MPIHandler::sendVector(const vector<double>& vector, int n, int destRank) {
     for (int i = 0; i < n; i++) {
         data[i] = vector[i];
     }
+    MPI_Send(&n, 1, MPI_INT, destRank, 0, MPI_COMM_WORLD);
     MPI_Send(data, n, MPI_DOUBLE, destRank, 0, MPI_COMM_WORLD);
     delete[] data;
 }
@@ -54,13 +55,28 @@ void MPIHandler::sendMatrix(const matrix<double>& matrix, int n, int destRank) {
             data[i * n + j] = matrix(i, j);
         }
     }
+    MPI_Send(&n, 1, MPI_INT, destRank, 0, MPI_COMM_WORLD);
     MPI_Send(data, n * n, MPI_DOUBLE, destRank, 0, MPI_COMM_WORLD);
     delete[] data;
 }
 
-vector<double> MPIHandler::receiveVector(int n, int sourceRank) {
+vector<double> MPIHandler::receiveVector(int& n,int sourceRank) {
+#ifdef DEBUG_MODE
+    if (!MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
+    }
+#else
+    MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
     double* data = new double[n];
+
+#ifdef DEBUG_MODE
+    if (!MPI_Recv(data, n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
+    }
+#else
     MPI_Recv(data, n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
     vector<double> result(n);
     for (int i = 0; i < n; i++) {
         result[i] = data[i];
@@ -69,9 +85,23 @@ vector<double> MPIHandler::receiveVector(int n, int sourceRank) {
     return result;
 }
 
-matrix<double> MPIHandler::receiveMatrix(int n, int sourceRank) {
+matrix<double> MPIHandler::receiveMatrix(int& n, int sourceRank) {
+#ifdef DEBUG_MODE
+    if (!MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
+    }
+#else
+    MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
     double* data = new double[n * n];
+
+#ifdef DEBUG_MODE
+    if (!MPI_Recv(data, n * n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
+    }
+#else
     MPI_Recv(data, n * n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
     matrix<double> result(n, n);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -81,3 +111,6 @@ matrix<double> MPIHandler::receiveMatrix(int n, int sourceRank) {
     delete[] data;
     return result;
 }
+
+int MPIHandler::getDest(int stmtRank)  { return (stmtRank - 1) % (size - 1) + 1; }
+//  int MPIHandler::getStmtRank() { return rank % (size - 1); }

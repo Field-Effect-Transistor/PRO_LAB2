@@ -13,6 +13,7 @@
 #include <QSpinBox>
 
 #include "../logic/MPIHandler.hpp"
+#include "EnterWidget.hpp"
 
 class MenuWidget : public QWidget {
     Q_OBJECT

@@ -4,6 +4,7 @@
 
 #include <QWidget>
 #include <QHBoxLayout>
+#include <QCloseEvent>
 
 #include "MenuWidget.hpp"
 #include "EnterWidget.hpp"
@@ -17,4 +18,8 @@ private:
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    static bool flag;
+
+    void closeEvent(QCloseEvent* event) override;
 };

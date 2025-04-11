@@ -2,6 +2,8 @@
 
 #include "MainWindow.hpp"
 
+bool MainWindow::flag = false;
+
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
     left = new MenuWidget();
     right = new EnterWidget();
@@ -48,9 +50,16 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
         &QPushButton::clicked,
         this,
         [this]() {
-            left->start(left->setNSpinBox->value());
+            left->start(right->n);
         }
     );
+
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::closeEvent(QCloseEvent* event)  {
+    // Виконуємо необхідну функцію перед закриттям
+    MPI_Abort(MPI_COMM_WORLD, 1);
+    event->accept(); // Приймаємо подію закриття
+}

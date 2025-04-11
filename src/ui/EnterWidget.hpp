@@ -19,7 +19,6 @@ private:
     QVBoxLayout*    mainLayout;
     QTableWidget*   table;
 
-    int n = 4;
 
 public:
     EnterWidget(QWidget *parent = nullptr);
@@ -34,6 +33,8 @@ public:
     static matrix<double> matrixA1;
     static matrix<double> matrixA2;
     static matrix<double> matrixB2;
+
+    int n = 4;
 
 public slots:
     void initTable(int n, QRadioButton* radio);

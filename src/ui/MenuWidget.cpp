@@ -88,5 +88,22 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
 MenuWidget::~MenuWidget() {}
 
 void    MenuWidget::start(int n) {
-    
+    double x;
+    MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(1) , 0, MPI_COMM_WORLD);   //  for b
+    MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(2) , 0, MPI_COMM_WORLD);   //  for C2
+    MPIHandler::sendVector(EnterWidget::vectorB1, n, MPIHandler::getDest(3));   //  for 26b1 - c1
+    MPIHandler::sendVector(EnterWidget::vectorC1, n, MPIHandler::getDest(3));   //  for 26b2 - c2
+    MPIHandler::sendMatrix(EnterWidget::matrixA, n, MPIHandler::getDest(4));    //  for y1
+    MPIHandler::sendMatrix(EnterWidget::matrixA1, n, MPIHandler::getDest(5));   //  for y2
+    MPIHandler::sendMatrix(EnterWidget::matrixB2, n, MPIHandler::getDest(6));   //  for (B2 + 26C2)
+    MPIHandler::sendMatrix(EnterWidget::matrixA2, n, MPIHandler::getDest(7));   //  for Y3
+
+#ifdef DEBUG_MODE
+    if (!MPI_Recv(&x, 1, MPI_DOUBLE, MPIHandler::getDest(18), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << MPIHandler::getDest(18) << std::endl;
+    }
+#else
+    MPI_Recv(&x, 1, MPI_DOUBLE, MPIHandler::getDest(18), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
+    std::cout << x << std::endl;
 }

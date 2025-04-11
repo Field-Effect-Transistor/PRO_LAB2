@@ -20,6 +20,7 @@ set(SOURCES
     src/ui/MenuWidget.cpp
     src/ui/EnterWidget.cpp
     src/ui/MainWindow.cpp
+    src/ui/NotificationWidget.cpp
     src/logic/MPIHandler.cpp
 )
 
