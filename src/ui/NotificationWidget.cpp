@@ -4,7 +4,7 @@
 
 NotificationWidget::NotificationWidget(const QString& text, QWidget* parent)
 : QMessageBox(parent) {
-    setIcon(QMessageBox::Information);
+    //setIcon(QMessageBox::Information);
     setText(text);
     setWindowTitle("Notification");
 }

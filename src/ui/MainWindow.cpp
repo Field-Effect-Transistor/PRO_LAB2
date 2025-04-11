@@ -60,6 +60,10 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::closeEvent(QCloseEvent* event)  {
     // Виконуємо необхідну функцію перед закриттям
-    MPI_Abort(MPI_COMM_WORLD, 1);
+    //  MPI_Abort(MPI_COMM_WORLD, 1);
+    bool isExit = true;
+    for (int i = 0; i < MPIHandler::getSize(); i++) {
+        MPI_Send(&isExit, 1, MPI_CXX_BOOL, i, 0, MPI_COMM_WORLD);
+    }
     event->accept(); // Приймаємо подію закриття
 }

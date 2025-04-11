@@ -33,6 +33,16 @@ int main(int argc, char *argv[]) {
         window.show();
         toReturn = app.exec();
     } else { while (true) {
+        bool isExit = false;
+#ifdef DEBUG_MODE
+        if (!MPI_Recv(&isExit, 1, MPI_CXX_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
+            std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << 0 << std::endl;
+        }
+#else
+        MPI_Recv(&isExit, 1, MPI_CXX_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+#endif
+        if (isExit)
+            goto exit;
         //  for b
         if (MPIHandler::getDest(1) == MPIHandler::getRank()) {
             int n;
@@ -240,6 +250,8 @@ int main(int argc, char *argv[]) {
             MPI_Send(&x, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
         }
     }}
+
+exit:
 
     return toReturn;
 }

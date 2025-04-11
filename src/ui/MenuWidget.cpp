@@ -88,6 +88,11 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
 MenuWidget::~MenuWidget() {}
 
 void    MenuWidget::start(int n) {
+    bool isExit = false;
+    for (int i = 0; i < MPIHandler::getSize(); i++) {
+        MPI_Send(&isExit, 1, MPI_CXX_BOOL, i, 0, MPI_COMM_WORLD);
+    }
+
     double x;
     MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(1) , 0, MPI_COMM_WORLD);   //  for b
     MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(2) , 0, MPI_COMM_WORLD);   //  for C2
@@ -105,5 +110,7 @@ void    MenuWidget::start(int n) {
 #else
     MPI_Recv(&x, 1, MPI_DOUBLE, MPIHandler::getDest(18), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 #endif
-    std::cout << x << std::endl;
+    //std::cout << x << std::endl;
+    NotificationWidget notification("x = " + QString::number(x, 'g', 17));
+    notification.exec();
 }

@@ -14,7 +14,7 @@
 
 #include "../logic/MPIHandler.hpp"
 #include "EnterWidget.hpp"
-
+#include "NotificationWidget.hpp"
 class MenuWidget : public QWidget {
     Q_OBJECT
 private:
