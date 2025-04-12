@@ -2,10 +2,7 @@
 #pragma once
 #include <mpi.h>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-
-using namespace boost::numeric::ublas;
+#include "Math.hpp"
 
 class MPIHandler {
 public:
@@ -16,10 +13,10 @@ public:
 //    static int getStmtRank();
 
 
-    static void sendVector(const vector<double>& vector, int n, int destRank);
-    static void sendMatrix(const matrix<double>& matrix, int n, int destRank);
-    static vector<double> receiveVector(int& n, int sourceRank);
-    static matrix<double> receiveMatrix(int& n, int sourceRank);
+    static void sendVector(const double* vector, int n, int destRank);
+    static void sendMatrix(const double*const* matrix, int n, int destRank);
+    static double* receiveVector(int& n, int sourceRank);
+    static double** receiveMatrix(int& n, int sourceRank);
 
 private:
     MPIHandler();

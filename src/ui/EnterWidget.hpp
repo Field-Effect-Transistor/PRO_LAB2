@@ -6,12 +6,9 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
 
 #include "MenuWidget.hpp"
-
-using namespace boost::numeric::ublas;
+#include "../logic/Math.hpp"
 
 class EnterWidget : public QWidget {
     Q_OBJECT
@@ -27,12 +24,12 @@ public:
     QPushButton*    confirmButton;
     QPushButton*    randomButton;
 
-    static vector<double> vectorB1;
-    static vector<double> vectorC1;
-    static matrix<double> matrixA;
-    static matrix<double> matrixA1;
-    static matrix<double> matrixA2;
-    static matrix<double> matrixB2;
+    static double* vectorB1;
+    static double* vectorC1;
+    static double** matrixA;
+    static double** matrixA1;
+    static double** matrixA2;
+    static double** matrixB2;
 
     int n = 4;
 

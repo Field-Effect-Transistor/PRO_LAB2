@@ -12,6 +12,8 @@
 #include <QButtonGroup>
 #include <QSpinBox>
 
+#include <iostream>
+
 #include "../logic/MPIHandler.hpp"
 #include "EnterWidget.hpp"
 #include "NotificationWidget.hpp"

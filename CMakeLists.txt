@@ -12,7 +12,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Знайти OpenMPI
 find_package(MPI REQUIRED)
-find_package(Boost REQUIRED)
+#find_package(Boost REQUIRED)
 
 # Вказати ваші вихідні файли
 set(SOURCES
@@ -22,6 +22,7 @@ set(SOURCES
     src/ui/MainWindow.cpp
     src/ui/NotificationWidget.cpp
     src/logic/MPIHandler.cpp
+    src/logic/Math.cpp
 )
 
 # Створити виконуваний файл
@@ -38,5 +39,5 @@ target_link_libraries(${PROJECT_NAME}
 # Додати include директрії
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${MPI_INCLUDE_PATH}
-    ${Boost_INCLUDE_DIR}
+#    ${Boost_INCLUDE_DIR}
 )
