@@ -55,5 +55,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 if (DEBUG_MODE)
     message("DEBUG MODE ON")
-    add_compile_options(-DDEBUG_MODE)
+    add_compile_definitions(-DDEBUG_MODE)
 endif()

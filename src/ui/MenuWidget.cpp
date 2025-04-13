@@ -122,23 +122,52 @@ void    MenuWidget::start(int n) {
     Math::print(stream, EnterWidget::vectorC1, n);
 
 #ifdef  MPI_ON
-    MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(1) , 0, MPI_COMM_WORLD);   //  for b
-    MPI_Send(&n, 1, MPI_INT, MPIHandler::getDest(2) , 0, MPI_COMM_WORLD);   //  for C2
-    MPIHandler::sendVector(EnterWidget::vectorB1, n, MPIHandler::getDest(3));   //  for 26b1 - c1
-    MPIHandler::sendVector(EnterWidget::vectorC1, n, MPIHandler::getDest(3));   //  for 26b2 - c2
-    MPIHandler::sendMatrix(EnterWidget::matrixA, n, MPIHandler::getDest(4));    //  for y1
-    MPIHandler::sendMatrix(EnterWidget::matrixA1, n, MPIHandler::getDest(5));   //  for y2
-    MPIHandler::sendMatrix(EnterWidget::matrixB2, n, MPIHandler::getDest(6));   //  for (B2 + 26C2)
-    MPIHandler::sendMatrix(EnterWidget::matrixA2, n, MPIHandler::getDest(7));   //  for Y3
+    MPIHandler::sendMatrix(EnterWidget::matrixB2, n, 2);
+    MPIHandler::sendMatrix(EnterWidget::matrixA2, n, 2);
+    MPIHandler::sendMatrix(EnterWidget::matrixA, n, 1);
 
-#ifdef DEBUG_MODE
-    if (!MPI_Recv(&x, 1, MPI_DOUBLE, MPIHandler::getDest(18), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
-        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << MPIHandler::getDest(18) << std::endl;
-    }
-#else
-    MPI_Recv(&x, 1, MPI_DOUBLE, MPIHandler::getDest(18), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-#endif
-    //std::cout << x << std::endl;
+    double* vector26b1 = Math::multiply(EnterWidget::vectorB1, 26, n);
+    double* vector26b1_c1 = Math::sub(vector26b1, EnterWidget::vectorC1, n);
+    stream << "Vector 26*b1-c1:" << std::endl;
+    Math::print(stream, vector26b1_c1, n);
+
+    double* y2 = Math::multiply(EnterWidget::matrixA1, vector26b1_c1, n);
+    stream << "Vector y2:" << std::endl;
+    Math::print(stream, y2, n);
+
+    MPIHandler::sendVector(y2, n, 1);
+    MPIHandler::sendVector(y2, n, 2);
+
+    double** Y3 = MPIHandler::receiveMatrix(n, 2);
+    double* Y3_y2 = Math::multiply(Y3, y2, n);
+    double* y1 = MPIHandler::receiveVector(n, 1);
+
+    double* Y3_y2_y1 = Math::add(Y3_y2, y1, n);
+    stream << "Vector Y3*y2+y1:" << std::endl;
+    Math::print(stream, Y3_y2_y1, n);
+    
+    double* y1_y2_Y3_2_y2 = MPIHandler::receiveVector(n, 2);
+    stream << "Vector y1+y2+Y3*2*y2:" << std::endl;
+    Math::print(stream, y1_y2_Y3_2_y2, n);
+
+    double* right = Math::add(Y3_y2_y1, y1_y2_Y3_2_y2, n);
+    stream << "Vector Y3 * y2 + y1 + y1` * Y3 * y1 + y2`:" << std::endl;
+    Math::print(stream, right, n);
+    double* left = MPIHandler::receiveVector(n, 1);
+
+    x = Math::multiply(left, right, n);
+
+    Math::deleteVector(vector26b1_c1);
+    Math::deleteVector(vector26b1);
+    Math::deleteVector(y2);
+    Math::deleteMatrix(Y3, n);
+    Math::deleteVector(Y3_y2);
+    Math::deleteVector(y1);
+    Math::deleteVector(Y3_y2_y1);
+    Math::deleteVector(y1_y2_Y3_2_y2);
+    Math::deleteVector(left);
+    Math::deleteVector(right);
+
 #else
     double x;
 
