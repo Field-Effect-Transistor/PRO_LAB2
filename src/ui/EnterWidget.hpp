@@ -31,7 +31,7 @@ public:
     static double** matrixA2;
     static double** matrixB2;
 
-    int n = 4;
+    static int n;
 
 public slots:
     void initTable(int n, QRadioButton* radio);

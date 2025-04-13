@@ -11,12 +11,21 @@
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QSpinBox>
+#include <QString>
 
 #include <iostream>
+#include <fstream>
+#include <ctime>
+#include <chrono>
 
-#include "../logic/MPIHandler.hpp"
+#include "../logic/Math.hpp"
 #include "EnterWidget.hpp"
 #include "NotificationWidget.hpp"
+
+#ifdef  MPI_ON
+#include "../logic/MPIHandler.hpp"
+#endif
+
 class MenuWidget : public QWidget {
     Q_OBJECT
 private:

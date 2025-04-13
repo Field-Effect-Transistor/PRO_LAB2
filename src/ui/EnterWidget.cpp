@@ -2,14 +2,26 @@
 
 #include "EnterWidget.hpp"
 
-double* EnterWidget::vectorB1 = Math::createVector(10);
-double* EnterWidget::vectorC1 = Math::createVector(10);
-double** EnterWidget::matrixA = Math::createMatrix(10);
-double** EnterWidget::matrixA1 = Math::createMatrix(10);
-double** EnterWidget::matrixA2 = Math::createMatrix(10);
-double** EnterWidget::matrixB2 = Math::createMatrix(10);
+#define Max 1000
+
+int EnterWidget::n = 10;
+
+double* EnterWidget::vectorB1 = nullptr;
+double* EnterWidget::vectorC1 = nullptr;
+double** EnterWidget::matrixA = nullptr;
+double** EnterWidget::matrixA1 = nullptr;
+double** EnterWidget::matrixA2 = nullptr;
+double** EnterWidget::matrixB2 = nullptr;
 
 EnterWidget::EnterWidget(QWidget *parent) : QWidget(parent) {
+
+    vectorB1 = Math::createVector(Max, 0);
+    vectorC1 = Math::createVector(Max, 0);
+    matrixA = Math::createMatrix(Max, 0);
+    matrixA1 = Math::createMatrix(Max, 0);
+    matrixA2 = Math::createMatrix(Max, 0);
+    matrixB2 = Math::createMatrix(Max, 0);
+
     mainLayout = new QVBoxLayout;
     randomButton = new QPushButton("Random");
     confirmButton = new QPushButton("Confirm");
@@ -39,10 +51,10 @@ EnterWidget::EnterWidget(QWidget *parent) : QWidget(parent) {
 EnterWidget::~EnterWidget() {
     Math::deleteVector(EnterWidget::vectorB1);
     Math::deleteVector(EnterWidget::vectorC1);
-    Math::deleteMatrix(EnterWidget::matrixA, 10);
-    Math::deleteMatrix(EnterWidget::matrixA1, 10);
-    Math::deleteMatrix(EnterWidget::matrixA2, 10);
-    Math::deleteMatrix(EnterWidget::matrixB2, 10);
+    Math::deleteMatrix(EnterWidget::matrixA, Max);
+    Math::deleteMatrix(EnterWidget::matrixA1, Max);
+    Math::deleteMatrix(EnterWidget::matrixA2, Max);
+    Math::deleteMatrix(EnterWidget::matrixB2, Max);
 }
 
 void EnterWidget::initTable(int n, QRadioButton* radio) {
@@ -72,7 +84,7 @@ void EnterWidget::initTable(int n, QRadioButton* radio) {
 void    EnterWidget::randomize() {
     for(int i = 0; i < table->rowCount(); i++) {
         for(int j = 0; j < table->columnCount(); j++) {
-            table->setItem(i, j, new QTableWidgetItem(QString::number(rand() % 100)));
+            table->setItem(i, j, new QTableWidgetItem(QString::number(rand() % 10000)));
         }
     }
 

@@ -5,7 +5,7 @@
 double** Math::createMatrix(int n) {
     double** matrix = new double*[n];
     for (int i = 0; i < n; i++) {
-        matrix[i] = new double[n] {0};
+        matrix[i] = new double[n];
     }
     return matrix;
 }
@@ -18,7 +18,7 @@ void Math::deleteMatrix(double** matrix, int n) {
 }
 
 double* Math::createVector(int n) {
-    double* vector = new double[n] {0};
+    double* vector = new double[n];
     return vector;
 }
 
@@ -119,4 +119,33 @@ double Math::multiply(const double* vectorA, const double* vectorB, int n) {
         result += vectorA[i] * vectorB[i];
     }
     return result;
+}
+
+void Math::print(std::ostream& stream, const double* vector, int n) {
+    for (int i = 0; i < n; i++) {
+        stream << vector[i] << " ";
+    }
+    stream << std::endl;
+}
+
+void Math::print(std::ostream& stream, const double*const* matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            stream << matrix[i][j] << " ";
+        }
+        stream << std::endl;
+    }
+}
+
+double* Math::createVector(int n, double value) {
+    double* vector = new double[n] {value};
+    return vector;
+}
+
+double** Math::createMatrix(int n, double value) {
+    double** matrix = new double*[n];
+    for (int i = 0; i < n; i++) {
+        matrix[i] = new double[n] {value};
+    }
+    return matrix;
 }

@@ -54,5 +54,6 @@ compile_commands.json
 *_qmlcache.qrc
 
 # build and .vscode
-build
+build*
 .vscode
+res*
