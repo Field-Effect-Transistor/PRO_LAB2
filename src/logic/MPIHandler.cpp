@@ -44,15 +44,10 @@ void MPIHandler::sendVector(const double* vector, int n, int destRank) {
 }
 
 void MPIHandler::sendMatrix(const double*const* matrix, int n, int destRank) {
-    double* data = new double[n * n];
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            data[i * n + j] = matrix[i][j];
-        }
-    }
     MPI_Send(&n, 1, MPI_INT, destRank, 0, MPI_COMM_WORLD);
-    MPI_Send(data, n * n, MPI_DOUBLE, destRank, 0, MPI_COMM_WORLD);
-    delete[] data;
+    for (int i = 0; i < n; ++i) {
+        MPI_Send(matrix[i], n, MPI_DOUBLE, destRank, 0, MPI_COMM_WORLD);
+    }
 }
 
 double* MPIHandler::receiveVector(int& n,int sourceRank) {
@@ -76,31 +71,13 @@ double* MPIHandler::receiveVector(int& n,int sourceRank) {
 }
 
 double** MPIHandler::receiveMatrix(int& n, int sourceRank) {
-#ifdef DEBUG_MODE
-    if (!MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
-        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
-    }
-#else
     MPI_Recv(&n, 1, MPI_INT, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-#endif
-    double* data = new double[n * n];
-
-#ifdef DEBUG_MODE
-    if (!MPI_Recv(data, n * n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)) {
-        std::cerr << "I am " << MPIHandler::getRank() << " and I received from" << sourceRank << std::endl;
+    double** matrix = new double*[n];
+    for (int i = 0; i < n; ++i) {
+        matrix[i] = new double[n];
+        MPI_Recv(matrix[i], n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
-#else
-    MPI_Recv(data, n * n, MPI_DOUBLE, sourceRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-#endif
-    double** matrix = Math::createMatrix(n);
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            matrix[i][j] = data[i * n + j];
-        }
-    }
-    delete[] data;
     return matrix;
 }
 
 int MPIHandler::getDest(int stmtRank)  { return (stmtRank - 1) % (size - 1) + 1; }
-//  int MPIHandler::getStmtRank() { return rank % (size - 1); }

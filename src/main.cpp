@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
                 double** matrixA = MPIHandler::receiveMatrix(n, 0);
                 double* vectorB = Math::createVector(n);
                 for (int i = 0; i < n; ++i) {
-                    vectorB[i] = 26 * pow(i, 3);
+                    vectorB[i] = 26 * pow(i + 1, 3);
                 }
                 stream << "Vector b:" << std::endl;
                 Math::print(stream, vectorB, n);

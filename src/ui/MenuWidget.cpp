@@ -35,7 +35,7 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
     setNLayout = new QHBoxLayout;
     setNSpinBox = new QSpinBox;
     confirmNButton = new QPushButton("Confirm");
-    setNSpinBox->setMinimum(2);
+    setNSpinBox->setMinimum(1);
     setNSpinBox->setValue(10);
     setNSpinBox->setMaximum(1000);
     setNLayout->addWidget(setNSpinBox);

@@ -84,7 +84,7 @@ void EnterWidget::initTable(int n, QRadioButton* radio) {
 void    EnterWidget::randomize() {
     for(int i = 0; i < table->rowCount(); i++) {
         for(int j = 0; j < table->columnCount(); j++) {
-            table->setItem(i, j, new QTableWidgetItem(QString::number(rand() % 10000)));
+            table->setItem(i, j, new QTableWidgetItem(QString::number(rand() % n + 1)));
         }
     }
 
