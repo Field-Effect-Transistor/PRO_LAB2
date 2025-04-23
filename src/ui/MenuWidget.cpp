@@ -2,6 +2,10 @@
 
 #include "MenuWidget.hpp"
 
+#ifndef MAXN
+    #define MAXN 1000
+#endif
+
 QRadioButton* MenuWidget::matrixA = nullptr;
 QRadioButton* MenuWidget::matrixA1 = nullptr;
 QRadioButton* MenuWidget::matrixA2 = nullptr;
@@ -37,7 +41,7 @@ MenuWidget::MenuWidget(QWidget *parent) : QWidget(parent) {
     confirmNButton = new QPushButton("Confirm");
     setNSpinBox->setMinimum(1);
     setNSpinBox->setValue(10);
-    setNSpinBox->setMaximum(1000);
+    setNSpinBox->setMaximum(MAXN);
     setNLayout->addWidget(setNSpinBox);
     setNLayout->addStretch();
     setNLayout->addWidget(confirmNButton);

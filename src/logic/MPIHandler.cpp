@@ -6,7 +6,11 @@
 int MPIHandler::rank = -1;
 int MPIHandler::size = -1;
 
-#define CHUNK_SIZE 5000
+#ifndef MAXN
+    #define MAXN 1000
+#endif
+
+#define CHUNK_SIZE (MAXN * MAXN)
 
 MPIHandler& MPIHandler::getInstance() {
     static MPIHandler instance;

@@ -2,7 +2,9 @@
 
 #include "EnterWidget.hpp"
 
-#define Max 1000
+#ifndef MAXN
+    #define MAXN 1000
+#endif
 
 int EnterWidget::n = 10;
 
@@ -15,12 +17,12 @@ double** EnterWidget::matrixB2 = nullptr;
 
 EnterWidget::EnterWidget(QWidget *parent) : QWidget(parent) {
 
-    vectorB1 = Math::createVector(Max, 0);
-    vectorC1 = Math::createVector(Max, 0);
-    matrixA = Math::createMatrix(Max, 0);
-    matrixA1 = Math::createMatrix(Max, 0);
-    matrixA2 = Math::createMatrix(Max, 0);
-    matrixB2 = Math::createMatrix(Max, 0);
+    vectorB1 = Math::createVector(MAXN, 0);
+    vectorC1 = Math::createVector(MAXN, 0);
+    matrixA = Math::createMatrix(MAXN, 0);
+    matrixA1 = Math::createMatrix(MAXN, 0);
+    matrixA2 = Math::createMatrix(MAXN, 0);
+    matrixB2 = Math::createMatrix(MAXN, 0);
 
     mainLayout = new QVBoxLayout;
     randomButton = new QPushButton("Random");
@@ -51,10 +53,10 @@ EnterWidget::EnterWidget(QWidget *parent) : QWidget(parent) {
 EnterWidget::~EnterWidget() {
     Math::deleteVector(EnterWidget::vectorB1);
     Math::deleteVector(EnterWidget::vectorC1);
-    Math::deleteMatrix(EnterWidget::matrixA, Max);
-    Math::deleteMatrix(EnterWidget::matrixA1, Max);
-    Math::deleteMatrix(EnterWidget::matrixA2, Max);
-    Math::deleteMatrix(EnterWidget::matrixB2, Max);
+    Math::deleteMatrix(EnterWidget::matrixA, MAXN);
+    Math::deleteMatrix(EnterWidget::matrixA1, MAXN);
+    Math::deleteMatrix(EnterWidget::matrixA2, MAXN);
+    Math::deleteMatrix(EnterWidget::matrixB2, MAXN);
 }
 
 void EnterWidget::initTable(int n, QRadioButton* radio) {

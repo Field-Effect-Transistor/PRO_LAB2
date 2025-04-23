@@ -54,11 +54,17 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 if (DEBUG_MODE)
-    message("DEBUG MODE ON")
+    message(STATUS "DEBUG MODE ON")
     add_compile_definitions(-DDEBUG_MODE)
 endif()
 
 if (VERBOSE_MODE)
-    message("VERBOSE MODE ON")
+    message(STATUS "VERBOSE MODE ON")
     add_compile_definitions(-DVERBOSE_MODE)
+endif()
+
+#set(MAXN 1000 CACHE STRING "Max value of N")
+if (MAXN)
+    message(STATUS "Max N set to ${MAXN}")
+    add_compile_definitions(MAXN=${MAXN})
 endif()
