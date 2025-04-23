@@ -53,11 +53,14 @@ int main(int argc, char *argv[]) {
                 stream << "Vector y1:" << std::endl;
                 Math::print(stream, y1, n);
 
+                double** Y3 = MPIHandler::receiveMatrix(n, 2);
+
                 MPIHandler::sendVector(y1, n, 0);
                 MPIHandler::sendVector(y1, n, 2);
 
-                double** Y3 = MPIHandler::receiveMatrix(n, 2);
                 double* y1_Y3 = Math::multiply(y1, Y3, n);
+                stream << "Vector y1_Y3:" << std::endl;
+                Math::print(stream, y1_Y3, n);
                 double y1_Y3_y1 = Math::multiply(y1_Y3, y1, n);
                 stream << "Scalar y1_Y3_y1:" << y1_Y3_y1 << std::endl;
 
@@ -87,40 +90,40 @@ int main(int argc, char *argv[]) {
                         matrixC2[i][j] = 1 / (pow(i + 1, 2) + j + 1);
                     }
                 }
-                stream << "Matrix C2:" << std::endl;
-                Math::print(stream, matrixC2, n);
 
                 double** matrixA2 = MPIHandler::receiveMatrix(n, 0);
                 double** matrix26C2 = Math::multiply(matrixC2, 26, n);
-                double** matrixB2_26C2 = Math::multiply(matrixB2, matrix26C2, n);
-                stream << "Matrix B2_26C2:" << std::endl;
-                Math::print(stream, matrixB2_26C2, n);
-
+                double** matrixB2_26C2 = Math::add(matrixB2, matrix26C2, n);
                 double** Y3 = Math::multiply(matrixA2, matrixB2_26C2, n);
-                stream << "Matrix Y3:" << std::endl;
-                Math::print(stream, Y3, n);
 
-                MPIHandler::sendMatrix(Y3, n, 0);
                 MPIHandler::sendMatrix(Y3, n, 1);
+                MPIHandler::sendMatrix(Y3, n, 0);
+
+                double* y1 = MPIHandler::receiveVector(n, 1);
 
                 double** Y3_2 = Math::multiply(Y3, Y3, n);
-                stream << "Matrix Y3_2:" << std::endl;
-                Math::print(stream, Y3_2, n);
 
                 double* y2 = MPIHandler::receiveVector(n, 0);
                 double* y2_Y3_2 = Math::multiply(y2, Y3_2, n);
-                stream << "Vector y2_Y3_2:" << std::endl;
-                Math::print(stream, y2_Y3_2, n);
 
                 double y2_Y3_2_y2 = Math::multiply(y2_Y3_2, y2, n);
-                stream << "Scalar y2_Y3_2_y2:" << y2_Y3_2_y2 << std::endl;
 
-                double* y1 = MPIHandler::receiveVector(n, 1);
                 double* y1_y2_Y3_2_y2 = Math::multiply(y1, y2_Y3_2_y2, n);
-                stream << "Vector y1_y2_Y3_2_y2:" << std::endl;
-                Math::print(stream, y1_y2_Y3_2_y2, n);
-
                 MPIHandler::sendVector(y1_y2_Y3_2_y2, n, 0);
+
+                stream << "Matrix C2:" << std::endl;
+                Math::print(stream, matrixC2, n);
+                stream << "Matrix B2_26C2:" << std::endl;
+                Math::print(stream, matrixB2_26C2, n);
+                stream << "Matrix Y3:" << std::endl;
+                Math::print(stream, Y3, n);
+                stream << "Matrix Y3_2:" << std::endl;
+                Math::print(stream, Y3_2, n);
+                stream << "Vector y2_Y3_2:" << std::endl;
+                Math::print(stream, y2_Y3_2, n);
+                stream << "Scalar y2_Y3_2_y2:" << y2_Y3_2_y2 << std::endl;
+                stream << "Vector y1*y2*Y3_2*y2:" << std::endl;
+                Math::print(stream, y1_y2_Y3_2_y2, n);
 
                 Math::deleteMatrix(matrixB2, n);
                 Math::deleteMatrix(matrixC2, n);

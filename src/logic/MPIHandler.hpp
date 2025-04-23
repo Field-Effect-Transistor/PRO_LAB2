@@ -1,6 +1,7 @@
 // MPIHandler.hpp
 #pragma once
 #include <mpi.h>
+#include <cstring>
 
 #include "Math.hpp"
 

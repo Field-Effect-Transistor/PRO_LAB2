@@ -3,21 +3,20 @@
 #include "Math.hpp"
 
 double** Math::createMatrix(int n) {
+    double* data = new double[n * n];
     double** matrix = new double*[n];
-    for (int i = 0; i < n; i++) {
-        matrix[i] = new double[n];
+    for (int i = 0; i < n; ++i) {
+        matrix[i] = data + i * n;
     }
     return matrix;
 }
 
 void Math::deleteMatrix(double** matrix, int n) {
-    for (int i = 0; i < n; i++) {
-        delete[] matrix[i];
-    }
+    delete[] matrix[0];
     delete[] matrix;
 }
 
-double* Math::createVector(int n) {
+double* Math::createVector(int n) { 
     double* vector = new double[n];
     return vector;
 }

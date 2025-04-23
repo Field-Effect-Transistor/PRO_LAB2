@@ -122,40 +122,44 @@ void    MenuWidget::start(int n) {
     Math::print(stream, EnterWidget::vectorC1, n);
 
 #ifdef  MPI_ON
+    MPIHandler::sendMatrix(EnterWidget::matrixA, n, 1);
     MPIHandler::sendMatrix(EnterWidget::matrixB2, n, 2);
     MPIHandler::sendMatrix(EnterWidget::matrixA2, n, 2);
-    MPIHandler::sendMatrix(EnterWidget::matrixA, n, 1);
 
     double* vector26b1 = Math::multiply(EnterWidget::vectorB1, 26, n);
     double* vector26b1_c1 = Math::sub(vector26b1, EnterWidget::vectorC1, n);
-    stream << "Vector 26*b1-c1:" << std::endl;
-    Math::print(stream, vector26b1_c1, n);
 
     double* y2 = Math::multiply(EnterWidget::matrixA1, vector26b1_c1, n);
-    stream << "Vector y2:" << std::endl;
-    Math::print(stream, y2, n);
+
+    double** Y3 = MPIHandler::receiveMatrix(n, 2);
+
+
+    double* y1 = MPIHandler::receiveVector(n, 1);
 
     MPIHandler::sendVector(y2, n, 1);
     MPIHandler::sendVector(y2, n, 2);
 
-    double** Y3 = MPIHandler::receiveMatrix(n, 2);
     double* Y3_y2 = Math::multiply(Y3, y2, n);
-    double* y1 = MPIHandler::receiveVector(n, 1);
 
     double* Y3_y2_y1 = Math::add(Y3_y2, y1, n);
-    stream << "Vector Y3*y2+y1:" << std::endl;
-    Math::print(stream, Y3_y2_y1, n);
     
     double* y1_y2_Y3_2_y2 = MPIHandler::receiveVector(n, 2);
-    stream << "Vector y1+y2+Y3*2*y2:" << std::endl;
-    Math::print(stream, y1_y2_Y3_2_y2, n);
 
     double* right = Math::add(Y3_y2_y1, y1_y2_Y3_2_y2, n);
-    stream << "Vector Y3 * y2 + y1 + y1` * Y3 * y1 + y2`:" << std::endl;
-    Math::print(stream, right, n);
     double* left = MPIHandler::receiveVector(n, 1);
 
     x = Math::multiply(left, right, n);
+    
+    stream << "Vector 26*b1-c1:" << std::endl;
+    Math::print(stream, vector26b1_c1, n);
+    stream << "Vector y2:" << std::endl;
+    Math::print(stream, y2, n);
+    stream << "Matrix Y3 * y2:" << std::endl;
+    Math::print(stream, Y3_y2, n);
+    stream << "Vector Y3*y2+y1:" << std::endl;
+    Math::print(stream, Y3_y2_y1, n);
+    stream << "Vector Y3 * y2 + y1 + y1` * Y3 * y1 + y2`:" << std::endl;
+    Math::print(stream, right, n);
 
     Math::deleteVector(vector26b1_c1);
     Math::deleteVector(vector26b1);
@@ -193,6 +197,8 @@ void    MenuWidget::start(int n) {
     double* vector26b1 = Math::multiply(EnterWidget::vectorB1, 26, n);
     double* vector26b1_c1 = Math::sub(vector26b1, EnterWidget::vectorC1, n);
     Math::deleteVector(vector26b1);
+    stream << "Vector 26*b1-c1:" << std::endl;
+    Math::print(stream, vector26b1_c1, n);
 
     //  y1
     double* y1 = Math::multiply(EnterWidget::matrixA, vectorB, n);
@@ -269,7 +275,7 @@ void    MenuWidget::start(int n) {
     Math::print(stream, y1_y2_Y3_2_y2, n);
 
     //  for Y3 * y2 + y1 + y1` * Y3 * y1 + y2`
-    double* right = Math::add(Y3_y2_y1, left, n);
+    double* right = Math::add(Y3_y2_y1, y1_y2_Y3_2_y2, n);
     stream << "Vector Y3 * y2 + y1 + y1` * Y3 * y1 + y2`:" << std::endl;
     Math::print(stream, right, n);
 

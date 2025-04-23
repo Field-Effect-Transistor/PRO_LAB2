@@ -57,3 +57,8 @@ if (DEBUG_MODE)
     message("DEBUG MODE ON")
     add_compile_definitions(-DDEBUG_MODE)
 endif()
+
+if (VERBOSE_MODE)
+    message("VERBOSE MODE ON")
+    add_compile_definitions(-DVERBOSE_MODE)
+endif()
